@@ -4,37 +4,36 @@ import time
 import numpy as np
 from pynput import keyboard
 
+IMAGES_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), "../images/")
+WATER_MARK = os.path.join(os.path.abspath(os.path.dirname(__file__)), "../water_mark/water_mark.png")
+WATER_MARK_SIZE = 50
 DELAY_SLIDE = 2
 DELAY_FADE = 1
 IMAGE_SIZE = 150
 BORDER_SIZE = 20
 BORDER_COLOR = [200, 200, 200]
-IMAGES_FOLDER = os.path.join(os.path.abspath(
-    os.path.dirname(__file__)), "../images/")
-WATER_MARK = os.path.join(os.path.abspath(
-    os.path.dirname(__file__)), "../water_mark/water_mark.png")
-WATER_MARK_SIZE = 50
-break_program = False
-
-
-def on_press(key):
-    global break_program
-    print(key)
-    if key == keyboard.Key.end:
-        print('end pressed')
-        break_program = True
-        return False
+EXIT = False
 
 
 def main():
-    slides()
+    with keyboard.Listener(on_press=on_press) as listener:
+        slides()
+        listener.join()
+
+
+def on_press(key):
+    global EXIT
+    if ord(key.char) == ord('q'):
+        print('Q pressed')
+        EXIT = True
+        exit(0)
 
 
 def slides():
     imgs_name = os.listdir(IMAGES_FOLDER)
     size = len(imgs_name)
     i = 0
-    while(not break_program):
+    while(not EXIT):
         img = getImage(imgs_name[i])
         next = i = (0) if (i == size - 1) else (i + 1)
         img2 = getImage(imgs_name[next])
@@ -76,12 +75,6 @@ def loadWaterMark():
     img = cv2.imread(WATER_MARK, cv2.IMREAD_UNCHANGED)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGRA)
     return cv2.resize(img, (WATER_MARK_SIZE, WATER_MARK_SIZE))
-
-
-with keyboard.Listener(on_press=on_press) as listener:
-    while not break_program:
-        main()
-    listener.join()
 
 
 if __name__ == "__main__":
