@@ -36,7 +36,7 @@ def showImg(name, matrix):
         for j in range(0, len(matrix[i])):
             img[i,j] = img[i,j] * matrix[i][j]
     
-    img = cv2.resize(img, (400,400))
+    img = cv2.resize(img, (400,400), interpolation = cv2.INTER_NEAREST)
     img = cv2.bitwise_not(img)
     cv2.imshow(name,img)
 
