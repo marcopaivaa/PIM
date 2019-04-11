@@ -4,8 +4,10 @@ import time
 import numpy as np
 from pynput import keyboard
 
-IMAGES_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), "../images/")
-WATER_MARK = os.path.join(os.path.abspath(os.path.dirname(__file__)), "../water_mark/water_mark.png")
+IMAGES_FOLDER = os.path.join(os.path.abspath(
+    os.path.dirname(__file__)), "../images/")
+WATER_MARK = os.path.join(os.path.abspath(
+    os.path.dirname(__file__)), "../water_mark/water_mark.png")
 WATER_MARK_SIZE = 50
 DELAY_SLIDE = 2
 DELAY_FADE = 1
@@ -60,7 +62,8 @@ def getImage(img):
     h, w = img.shape[:2]
     img = waterMark(np.dstack([img, np.ones((h, w), dtype="uint8") * 255]))
     img = cv2.copyMakeBorder(img, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE,
-                             BORDER_SIZE, cv2.BORDER_CONSTANT, value=BORDER_COLOR)
+                             BORDER_SIZE, cv2.BORDER_CONSTANT,
+                             value=BORDER_COLOR)
     return cv2.resize(img, (IMAGE_SIZE, IMAGE_SIZE))
 
 
