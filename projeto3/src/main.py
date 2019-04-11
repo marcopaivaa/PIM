@@ -17,21 +17,15 @@ def main():
     contours, hierarchy = cv2.findContours(
         thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     cv2.drawContours(img, contours, -1, RED, 2)
-
     for contour in contours:
         x, y, w, h = cv2.boundingRect(contour)
         roi = img[y:y+h, x:x+w]
-        # cv2.imwrite('dado_recortado.jpg', roi)
-        # dado = cv2.imread('dado_recortado.jpg', cv2.IMREAD_GRAYSCALE)
         detector = cv2.SimpleBlobDetector_create()
         points = detector.detect(roi)
-
         if len(points) > 0:
             cv2.putText(img, str(len(points)), (x+w, y+h),
                         cv2.FONT_HERSHEY_SIMPLEX, .5, RED, 2)
-
     showImg('Dices', img)
-    # os.remove('dado_recortado.jpg')
 
 
 def showImg(name, img):
